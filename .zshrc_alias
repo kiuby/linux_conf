@@ -1,0 +1,78 @@
+
+export EDITOR="vim"
+
+#My zsh configuration
+# Old alias, because of special char printed when shutdown, alias change
+#alias bye="shutdown -h now"
+alias bye="systemctl poweroff"
+
+alias lock="xtrlock"
+alias vi=vim
+alias gnuradio-companion="GTK2_RC_FILES= gnuradio-companion"
+alias python="python2.7"
+
+
+alias "..."="../.."
+alias "...."="../../.."
+alias "....."="../../../.."
+
+
+
+##############################################
+############			  ############
+#########	Yaourt Alias	     #########
+############			  ############
+##############################################
+
+########   	Synchronisation & Upgrade
+#alias yourt-synupg="yaourt -Syua"
+#alias yourt-synupg-dev="yaourt -Syua --devel"
+#
+#######		Cache
+#alias yourt-clear-cache-notins="yaourt -Sc"
+#alias yourt-clear-cache="yaourt -Scc"
+#
+######## 	Query
+#alias yourt-foreign="yaourt -Qma"
+#
+#
+###############################################
+#############			  ############
+##########	Pacman Alias	     #########
+#############			  ############
+###############################################
+#
+#########   	Synchronisation & Upgrade
+#alias apac-sync="sudo pacman -Sy"
+#alias apac-upg="sudo pacman -Su"
+#alias apac-syn-upg="sudo pacman -Syu"
+#
+#alias apac-full-sync="sudo pacman -Syy"
+#alias apac-full-upg="sudo pacman -Syu"
+#alias apac-full-syn-upg="sudo pacman -Syuu"
+#
+#######		Cache
+#alias apac-clear-cache-notins="sudo pacman -Sc"
+#alias apac-clear-cache="sudo pacman -Scc"
+#
+######## 	Query
+#alias apac-list="sudo pacman -Qqen"
+#alias apac-repo-sear="sudo pacman -Ss"
+#alias apac-repo-info="sudo pacman -Si"
+#alias apac-loc-sear="sudo pacman -Qs"
+#alias apac-loc-info="sudo pacman -Qi"
+#alias apac-ins="sudo pacman -S"
+#
+#alias apac-show-orphan="sudo pacman -Qdt"
+#alias apac-info="sudo pacman -Si"
+##alias apac-show-pkt-ins="sudo pacman -Qe"
+##alias apac-show-pkt-ins-dep="sudo pacman -Q"
+#alias apac-show-files="sudo pacman -Ql"
+#
+######## 	Query Remove
+#alias apac-rem="sudo pacman -R"
+#alias apac-rem-purg="sudo pacman -Rn"
+#alias apac-rem-dep="sudo pacman -Rs"
+#alias apac-rem-purg-dep="sudo pacman -Rsn"
+#
+#

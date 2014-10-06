@@ -1,0 +1,70 @@
+!xterm*font: fixed
+!xterm*boldFont: fixed
+
+!URxvt*font:                 xft:Anonymice Powerline:regular:size=12
+!URxvt*imFont:               xft:Anonymice Powerline:regular:size=12
+!URxvt*boldFont:             xft:Anonymice Powerline Bold:bold:size=12
+!URxvt*italicFont:           xft:Anonymice Powerline Italic:italic:size=12
+!URxvt*boldItalicFont:       xft:Anonymice Powerline Bold Italic:bold:italic:size=12
+
+
+!ssh-askpass*background: !000000
+
+URxvt.perl-ext-common: default,clipboard,fullscreen
+!URxvt.perl-ext-common:  default,clipboard,url-select,keyboard-select,fullscreen,matcher
+!URxvt.url-select.launcher:  firefox
+URxvt.url-select.underline:  true
+URxvt.keysym.M-u:  perl:url-select:select_next
+URxvt.keysym.M-Escape:  perl:keyboard-select:activate
+URxvt.keysym.M-s:  perl:keyboard-select:search
+
+
+
+!Awesome wm doesn't support other cursors because XCB doesn't support Xcursor, so I was stuck with a normal black cursor.
+!https://wiki.archlinux.org/index.php/Cursor_Themes
+!Xcursor.theme: oxy-neon
+
+
+
+
+URxvt.iso14755 : false
+! Provided by urxvt-perls
+! URxvt.keysym.C-C: perl:clipboard:copy
+! URxvt.keysym.C-V: perl:clipboard:paste
+! URxvt.keysym.C-A-V: perl:clipboard:paste_escaped
+
+!URxvt.clipboard.autocopy:   true
+
+
+
+!*scrollBar: false
+!*transparent: true
+!*shading: 5
+!*saveLines: 12000
+!*foreground: White
+!*background: Black
+
+URxvt*foreground: White
+URxvt*background: Black
+!URxvt*fading: 50
+!URxvt*fadeColor: !808080
+URxvt*scrollBar: false
+URxvt*transparent: true
+URxvt*shading: 5
+URxvt*saveLines: 12000
+
+!URxvt.intensityStyles: false
+!URxvt*tintColor: Black
+!xvt.depth: 32
+!URxvt.background: rgba:5555/5555/5555/aaaa
+!URxvt.foreground: rgba:0000/0000/0000/ffff
+
+
+
+! molokai inspired colors (darker version)
+! vim: set ft=xdefaults:
+
+!black
+URxvt*color0:       #000000
+URxvt*color8:       #1c1c1c
+
