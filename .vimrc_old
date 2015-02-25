@@ -1,0 +1,75 @@
+" 
+" VUNDLE BEGIN
+"
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Yggdroot/indentLine'
+Bundle 'altercation/vim-colors-solarized'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" 
+" VUNDLE END
+"
+
+" source grml vim file
+source $HOME/.vimrc.grml
+
+" my custom
+filetype on
+syntax enable           " enable syntax processing
+set tabstop=4       " number of visual spaces per TAB
+set softtabstop=4   " number of spaces in tab when editing
+set expandtab       " tabs are spaces
+
+set smartindent
+set shiftwidth=4
+
+set number              " show line numbers
+set showcmd             " show command in bottom bar
+set wildmenu            " visual autocomplete for command menu
+
+
+set background=dark
+colorscheme molokai
+
+" colorscheme solarized
+let g:rehash256 = 1
+filetype plugin indent on
+
+" column 
+" set cursorline cursorcolumn
+set cursorline 
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%80v.*/
+
+"set colorcolumn=80 
+"highlight ColorColumn ctermbg=1
+
+set list
+set listchars=tab:▸\ ,eol:¬,trail:·,extends:.,precedes:.
+"set listchars=eol:¬,trail:·,tab:▸-,trail:▸,extends:▸,precedes:▸
+let g:indentLine_color_term = 239
+let g:indentLine_char = '▸'
+
+
+"let g:indent_guides_enable_on_vim_startup = 1
+"set ts=1 sw=1
+"let g:indent_guides_color_change_percent = 80
+"let g:indent_guides_auto_colors = 0
+""let g:indent_guides_start_level = 0
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=102
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=103
+

@@ -23,15 +23,13 @@ URxvt.fading:               0
 ! URxvt.visualBell:           true
 URxvt.loginShell:           true
 URxvt.saveLines:            1000
-URxvt.internalBorder:       0
+URxvt.internalBorder:       3
 URxvt.lineSpace:            0
  
 ! Fonts
 URxvt.allow_bold:           false
 /* URxvt.font:                 -*-terminus-medium-r-normal-*-12-120-72-72-c-60-iso8859-1 */
-! oxygen is good too
-!URxvt*font: xft:Oxygen Mono:size=10
-URxvt*font: xft:Liberation Mono:size=10
+URxvt*font: xft:Oxygen Mono:size=10
 !URxvt*font: xft:Monospace:pixelsize=13
 !URxvt*boldFont: xft:Monospace:pixelsize=13
  
@@ -59,8 +57,10 @@ URxvt.pointerBlank:         true
  
 *foreground: #FFFFFF
 !*background: #121212
-*background: #232323
+!*background: #232323
 !*background: #303030
+*background: #1C3623
+
 !
 !! emacs style
 !*foreground: #FFFFFF

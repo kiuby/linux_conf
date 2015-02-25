@@ -1,271 +1,330 @@
-" Filename:      /etc/vim/vimrc
-" Purpose:       configuration file for vim
-" Authors:       grml-team (grml.org), (c) Michael Prokop <mika@grml.org>
-" Bug-Reports:   see http://grml.org/bugs/
-" License:       This file is licensed under the GPL v2.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" All system-wide defaults are set in $VIMRUNTIME/debian.vim (usually just
-" /usr/share/vim/vimcurrent/debian.vim) and sourced by the call to :runtime you
-" can find below.  If you wish to change any of those settings, you should do it
-" in the file /etc/vim/vimrc.local, since debian.vim will be overwritten
-" everytime an upgrade of the vim packages is performed and this file
-" (/etc/vim/vimrc) every time the package grml-etc-core is upgraded.  It is
-" recommended to make changes after sourcing debian.vim since it alters the
-" value of the 'compatible' option.
-
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-  runtime! debian.vim
-
-" Uncomment the next line to make Vim more Vi-compatible
-" NOTE: debian.vim sets 'nocompatible', but only if debian.vim is available,
-" so let's make sure we run in nocompatible mode:
-  set nocompatible
-
-" Setting 'compatible' changes numerous
-" options, so any other options should be set AFTER setting 'compatible'.
-" set compatible
-
-  set backspace=indent,eol,start        " more powerful backspacing
-
-" Now we set some defaults for the editor
-  set autoindent        " always set autoindenting on
-" set linebreak         " Don't wrap words by default
-  set textwidth=0       " Don't wrap lines by default
-  set nobackup          " Don't keep a backup file
-  set viminfo='20,\"50  " read/write a .viminfo file, don't store more than
-                        " 50 lines of registers
-  set history=50        " keep 50 lines of command line history
-  set ruler             " show the cursor position all the time
-
-" Suffixes that get lower priority when doing tab completion for filenames.
-" These are files we are not likely to want to edit or read.
-  set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
-
-" Vim5 and later versions support syntax highlighting.
-" Just load the main syntax file when Vim was compiled with "+syntax".
-  if has("syntax")
-     syntax on
-  endif
-
-" Debian uses compressed helpfiles. We must inform vim that the main
-" helpfiles is compressed. Other helpfiles are stated in the tags-file.
-" set helpfile=$VIMRUNTIME/doc/help.txt.gz
-
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-  set background=dark
-
-" begin of grml specials:
-"  set list listchars=tab:»·
-"  set listchars=eol:$,precedes:«,extends:»,tab:··,trail:·
-" end of grml specials
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-" if has("autocmd")
-"   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-"     \| exe "normal g'\"" | endif
-" endif
-
-" Uncomment the following to have Vim load indentation rules according to the
-" detected filetype. Per default Debian Vim only load filetype specific
-" plugins.
-  if has("autocmd")
-    filetype indent on
-  endif
-
-" The following are commented out as they cause vim to behave a lot
-" differently from regular Vi. They are highly recommended though.
-  set showcmd           " Show (partial) command in status line.
-  set showmatch         " Show matching brackets.
-" set ignorecase        " Do case insensitive matching
-" set smartcase         " Do smart case matching
-" set incsearch         " Incremental search
-" set autowrite         " Automatically save before commands like :next and :make
-" When switching between different buffers you can't use undo without 'set hidden':
-  set hidden            " Hide buffers when they are abandoned
-" set mouse=a           " Enable mouse usage (all modes) in terminals
-  set wildmenu          " command-line completion operates in an enhanced mode
-
-  set pastetoggle=<f11>               " don't change text when copy/pasting
-  set dictionary=/usr/share/dict/word " used with CTRL-X CTRL-K
-
-""" set the screen hardstatus to vim(filename.ext)
-  if ((&term =~ '^screen') && ($VIM_PLEASE_SET_TITLE =~ '^yes$') || has('gui_running'))
-    set t_ts=k
-    set t_fs=\
-    set title
-    autocmd BufEnter * let &titlestring = "vim(" . expand("%:t") . ")"
-    let &titleold = fnamemodify(&shell, ":t")
-  endif
-
-" turn these ON:
-  set ek vb
-" set digraph
-" turn these OFF ("no" prefix):
-  set nodigraph noeb noet nosol
-" non-toggles:
-  set bs=2 fo=cqrt ls=2 shm=at ww=<,>,h,l
-" set bs=2 fo=cqrt ls=2 shm=at tw=72 ww=<,>,h,l
-  set comments=b:#,:%,fb:-,n:>,n:)
-"  set list listchars=tab:»·,trail:·
-  set listchars=eol:$,precedes:«,extends:»,tab:»·,trail:·
-  set viminfo=%,'50,\"100,:100,n~/.viminfo
-  set tags=./tags,./TAGS,tags,TAGS,../tags,../../tags,../../../tags,../../../../tags
-
-" autocommands:
-" when the file type is "mail" then set the textwidth to "70":
-  if has("autocmd")
-     au FileType mail   set tw=70
-" When editing a file, always jump to the last cursor position
-"  au BufReadPost * if line("'\"") | exe "'\"" | endif
-     autocmd BufReadPost * if line("'\"") && line("'\"") <= line("$") | exe "normal `\"" | endif
-  endif
-
-" some colors - as an example "white on black" [use bold fonts]:
-"  hi normal   ctermfg=white  ctermbg=black guifg=white  guibg=black
-"  hi nontext  ctermfg=blue   ctermbg=black guifg=blue   guibg=black
-" set t_Co=256                " number of colors
-
-" some useful mappings:
-
-" with F7 copy all current buffer to clipboard, or a selection.
-" with shift-F7, paste all clipboard contents
-" see: http://www.vim.org/tips/tip.php?tip_id=964
-  map   <F7>  :w !xclip<CR><CR>
-  vmap  <F7>  "*y
-  map <S-F7>  :r!xclip -o<CR>
-
-" remove/delete trailing whitespace:
-  nmap ;tr :%s/\s\+$//
-  vmap ;tr  :s/\s\+$//
-
-" execute the command in the current line (minus the first word, which
-" is intended to be a shell prompt) and insert the output in the buffer
-  map ,e ^wy$:r!"
-
-" update timestamp
-  iab YDATE <C-R>=strftime("%a %b %d %T %Z %Y")<CR>
-  map ,L  1G/Latest change:\s*/e+1<CR>CYDATE<ESC>
-
-" the shell in a box mode. found in posting by Stefan `Sec` Zehl
-" in newsgroup de.alt.sysadmin.recovery, msg­id:  <df7lhe$2hup$1@ice.42.org>
-" Requires zsh for "print -P $PS1" / replace if needed.
-" Your prompt should end in > (and only contain one)
-" so run something like:
-"   % export PS1='%n@%m > '
-" in your zsh, press ',l' and <enter> for running commands, end mode via <esc>
-  map __start :imap <C-V><C-M> <C-O>__cmd<C-V>\|imap <C-V><ESC> <C-V><ESC>__end<C-M>
-  noremap __end :iunmap <C-V><CR>\|iunmap <C-V><ESC><C-M>:"Vish ended.<C-M>
-  noremap __cmd 0<ESC>f>ly$:r !<C-R>";print -P $PS1<C-M>A
-  noremap __scmd :r !print -P $PS1<c-M>A
-  map ,l __start__scmd
-
-" Kill quote spaces (when quoting a quote)
-  map ,kqs mz:%s/^> >/>>/<cr>
-
-" Interface to Mercurial Version Control
-  if filereadable( "/usr/share/doc/mercurial/examples/vim/hg-menu.vim" )
-    source /usr/share/doc/mercurial/examples/vim/hg-menu.vim
-  endif
-
-" Vim 7 brings cool new features - see ':he version7'!
-" The coolest features of Vim7 by mika
-" ====================================
-"  1) omni/intellisense completion: use CTRL-X CTRL-O in insert mode to start it [:he compl-omni]
-"  2) internal grep: vimgrep foo bar [:he vimgrep]
-"  3) tab pages: vim -p file1 file2 - then use the :tab command [:he tabpage]
-"     gt -> next tab
-"     gT -> previous tab
-"  4) undo branches: :undolist / :earlier 2h / :later 2h
-"     instead of using u (undo) and CTRL-R (redo), you might experiment with g-
-"     and g+ to move through the text state [:he undolist]
-"  5) browse remote directories via scp using netrw plugin: :edit scp://host//path/to/ [:he netrw.vim]
-"  6) start editing the filename under the cursor and jump to the line
-"     number following the file name: press gF [:he gF]
-"  7) press 'CTRL-W F' to start editing the filename under the cursor in a new
-"     window and jump to the line number following the file name. [:he CTRL-W_F]
-"  8) spelling correction (see later for its configuration) [:he spell]:
-"      ]s  -> Move to next misspelled word after the cursor.
-"      zg  -> Add word under the cursor as a good word to the first name in 'spellfile'
-"      zw  -> Like "zg" but mark the word as a wrong (bad) word.
-"      z=  -> For the word under/after the cursor suggest correctly spelled words.
-" 9)  highlight active cursor line using 'set cursorline' [:he cursorline]
-" 10) delete inner quotes inside HTML-code using <C-O>cit (see its mapping later) [:he tag-blocks]
+" ---------------------------------------------------------------------------
+" ------------      BEGIN OF VUNDLE PLUGIN      -----------------------------
+" ---------------------------------------------------------------------------
 "
-if version >= 700
-  " Thanks for some ideas to Christian 'strcat' Schneider and Julius Plenz
-  " turn spelling on by default:
-  "  set spell
-  " toggle spelling with F12 key:
-    map <F12> :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
-    set spellfile=~/.vim/spellfile.add
-  " change language -  get spell files from http://ftp.vim.org/pub/vim/runtime/spell/ =>
-  " cd ~/.vim/spell && wget http://ftp.vim.org/pub/vim/runtime/spell/de.{latin1,utf-8}.spl
-  " change to german:
-  "  set spelllang=de
-  " highlight spelling correction:
-  "  highlight SpellBad    term=reverse   ctermbg=12 gui=undercurl guisp=Red       " badly spelled word
-  "  highlight SpellCap    term=reverse   ctermbg=9  gui=undercurl guisp=Blue      " word with wrong caps
-  "  highlight SpellRare   term=reverse   ctermbg=13 gui=undercurl guisp=Magenta   " rare word
-  "  highlight SpellLocale term=underline ctermbg=11 gui=undercurl guisp=DarkCyan  " word only exists in other region
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-  " set maximum number of suggestions listed to top 10 items:
-  set sps=best,10
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+" call vundle#begin('~/some/path/here')
 
-  " highlight matching parens:
-  " set matchpairs=(:),[:],{:},< :>
-  " let loaded_matchparen = 1
-  " highlight MatchParen term=reverse   ctermbg=7   guibg=cornsilk
+" let Vundle manage Vundle, required
+" https://github.com/gmarik/Vundle.vim
+Plugin 'gmarik/Vundle.vim'
 
-  " highlight the cursor line and column:
-  " set cursorline
-  " highlight CursorLine   term=reverse   ctermbg=7   guibg=#333333
-  " highlight CursorColumn guibg=#333333
+" autocompletion plugin
+" https://github.com/Valloric/YouCompleteMe 
+" http://valloric.github.io/YouCompleteMe/
+Plugin 'Valloric/YouCompleteMe'
 
-  " change inner tag - very useful e.g. within HTML-code!
-  " ci" will remove the text between quotes, also works for ' and `
-  imap <F10> <C-O>cit
+" syntax plugin 
+" https://github.com/scrooloose/syntastic
+Plugin 'scrooloose/syntastic'
 
-  " use the popup menu also when there is only one match:
-  " set completeopt=menuone
-  " determine the maximum number of items to show in the popup menu for:
-  set pumheight=7
-  " set completion highlighting:
-  "  highlight Pmenu      ctermbg=13     guifg=Black   guibg=#BDDFFF              " normal item
-  "  highlight PmenuSel   ctermbg=7      guifg=Black   guibg=Orange               " selected item
-  "  highlight PmenuSbar  ctermbg=7      guifg=#CCCCCC guibg=#CCCCCC              " scrollbar
-  "  highlight PmenuThumb cterm=reverse  gui=reverse guifg=Black   guibg=#AAAAAA  " thumb of the scrollbar
-endif
+" just an awesome status bar
+" https://github.com/bling/vim-airline
+Plugin 'bling/vim-airline'
 
-
-" To enable persistent undo uncomment following section.
-" The undo files will be stored in $HOME/.cache/vim
-
-" if version >= 703
-" " enable persistent-undo
-"  set undofile
+" snippet engine
+" https://github.com/SirVer/ultisnips
+" Plugin 'SirVer/ultisnips'
 "
-"  " store the persistent undo file in ~/.cache/vim
-"  set undodir=~/.cache/vim/
+" Snippets are separated from the engine. python snippets
+" https://github.com/honza/vim-snippets
+" Plugin 'honza/vim-snippets'
+
+" ctrl p plugin
+" https://github.com/kien/ctrlp.vim
+" Plugin 'kien/ctrlp'
+
+" nerd comment
+" https://github.com/scrooloose/nerdcommenter
+" Plugin 'scrooloose/nerdcommenter'
+
+" surrounding vim
+" https://github.com/tpope/vim-surround
+" Plugin 'tpope/vim-surround'
+
+" json plugin, because all json is js, but not all js is json
+" https://github.com/elzr/vim-json
+Plugin 'elzr/vim-json'
+
+" tabular plugins, need by markdown
+" https://github.com/godlygeek/tabular
+" http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
+Plugin 'godlygeek/tabular'
+
+" markdown syntax highlighting, matching rules and mappings
+" https://github.com/plasticboy/vim-markdown
+Plugin 'plasticboy/vim-markdown'
+
+" some colorschems, just amazing 
+Plugin 'flazz/vim-colorschemes'
+
+" get a better indent, 
+Plugin 'Yggdroot/indentLine'
+
+" filebrowser bar plugin
+" https://github.com/scrooloose/nerdtree
+Plugin 'scrooloose/nerdtree'
+
+" tagbar plugin
+" https://github.com/majutsushi/tagbar
+Plugin 'majutsushi/tagbar'
+
+" INDENTATION 
+" https://github.com/klen/python-mode
+" https://github.com/gmarik/vimfiles
+" https://github.com/zaiste/vimified
+" snipper, if else, ...
+" https://github.com/fisadev/fisa-vim-config
+" https://github.com/timss/vimconf/blob/master/.vimrc
+" https://github.com/liangxianzhe/oh-my-vim
+" https://github.com/tpope/vim-fugitive
+" https://github.com/tpope/vim-haystack
+" https://github.com/tpope/vim-sleuth
+" https://github.com/vim-scripts/a.vim
+
+" one day
+" 
+" minimalist, versatile Vim motion plugin that jumps to any location specified
+" by two characters
+" https://github.com/justinmk/vim-sneak
+" Plugin 'justinmk/vim-sneak'
+
+" configure % to match more than just single characters
+" https://github.com/edsono/vim-matchit
+" Plugin 'edsono/vim-matchit'
+
+" git plugin
+" https://github.com/tpope/vim-fugitive
+" Plugin 'tpope/vim-fugitive'
+
+" git diff directly from column lines on vim
+" https://github.com/airblade/vim-gitgutter
+" Plugin 'airblade/vim-gitgutter'
+
+" asynchronous build and test dispatcher 
+" https://github.com/tpope/vim-dispatch
+" Plugin 'tpope/vim-dispatch'
+
+" mercurial plugin
+" https://bitbucket.org/ludovicchabant/vim-lawrencium
+" Plugin 'ludovicchabant/vim-lawrencium'
+
+" show update from VCS into vim (use vim-gitgutter if only need git)
+" https://github.com/mhinz/vim-signify
+" Plugin 'mhinz/vim-signify'
+
+" graphical undo visu into vim
+" https://github.com/sjl/gundo
+" Plugin 'sjl/gundo'
+
+" Bundle 'altercation/vim-colors-solarized'
+" Plugin 'nathanaelkane/vim-indent-guides'"
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" pour toi simon, il est 00h30, et je te push enfin ma conf, qui n'est pas
+" encore fini, mais est deja pas mal
+" installation : 
+" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
+" Vim 7.3.584 with python2
+"cd ~/.vim/bundle/YouCompleteMe
+"./install.sh --clang-completer
 "
-"  " create undodir directory if possible and does not exist yet
-"  let targetdir=$HOME . "/.cache/vim"
-"  if isdirectory(targetdir) != 1 && getftype(targetdir) == "" && exists("*mkdir")
-"   call mkdir(targetdir, "p", 0700)
-"  endif
-" endif
+" ---------------------------------------------------------------------------
+" ------------      END OF VUNDLE PLUGIN      -------------------------------
+" ---------------------------------------------------------------------------
 
-" Source a global configuration file if available
-" Deprecated by Debian but still supported by grml
-  if filereadable("/etc/vim/vimrc.local")
-    source /etc/vim/vimrc.local
-  endif
+" XXX: must include this file, later i think ...
+    if filereadable("$HOME/.vimrc.grml")
+        source $HOME/.vimrc.grml
+    endif
 
-" source user-specific local configuration file
-  if filereadable(expand("$HOME/.vimrc.local"))
-    source $HOME/.vimrc.local
-  endif
-"# END OF FILE #################################################################
+" ---------------------------------------------------------------------------
+" ------------      BEGIN OF PIMP MY PLUGIN     -----------------------------
+" ---------------------------------------------------------------------------
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Syntastic tunning
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" For full documentation, see
+" http://powerman.name/download/vim/latest.vim/bundle/syntastic/doc/syntastic.txt
+
+" default status line
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" Use this option to tell syntastic to automatically open and/or close the
+" |location list|
+" When set to 1 the error window will be automatically opened when errors are
+" detected, and closed when none are detected. Default 2
+let g:syntastic_auto_loc_list = 1
+
+" Enable this option to tell syntastic to always stick any detected errors
+" into the |location-list| Default 0
+let g:syntastic_always_populate_loc_list=1
+
+" When set to 1 the cursor will always jump to the first issue detected.
+" Default 0
+let g:syntastic_auto_jump = 1
+
+" If enabled, syntastic will do syntax checks when buffers are first loaded as
+" well as on saving. Default 0 
+let g:syntastic_check_on_open = 1
+
+" Normally syntastic runs syntax checks whenever buffers are written to disk.
+" Default 1
+let g:syntastic_check_on_wq = 0
+
+" Use this option to specify the height of the location lists that syntastic 
+" opens. Default 10
+let g:syntastic_loc_list_height = 5
+
+""Sytanstic Error Signs"
+let g:syntastic_enable_signs=1
+
+" syntax 
+let g:syntastic_error_symbol='âœ˜' " 'âœ—'
+let g:syntastic_warning_symbol='âš '
+
+" style 
+let g:syntastic_style_error_symbol='e' " 'âœ—'
+let g:syntastic_style_warning_symbol='w'
+
+" enable multiple checkers 
+let g:syntastic_aggregate_errors = 1
+
+" python syntastic config
+let g:syntastic_python_python_exec = '/usr/bin/python2.7'
+let g:syntastic_python_checkers = 
+\ ['pylint', 'flake8', 'python']
+"\ ['pylint', 'flake8', 'pyflakes', 'pep8', 'python']
+let g:syntastic_enable_python_checker = 1
+
+" perl syntastic config 
+let g:syntastic_perl_checkers = ['perl']
+let g:syntastic_enable_perl_checker = 1
+
+
+" ---------------------------------------------------------------------------
+" ------------      END OF PIMP MY PLUGIN       -----------------------------
+" ---------------------------------------------------------------------------
+
+
+" ---------------------------------------------------------------------------
+" ------------      BEGIN OF PIMP MY VIM        -----------------------------
+" ---------------------------------------------------------------------------
+
+"
+"" TUN MY CONF
+" hides buffers instead of closing them
+"  you can have unwritten changes to a file and open a new file using :e,
+"  without being forced to write or undo your changes first. Also, undo
+"  buffers and marks are preserved while the buffer is open
+set hidden
+
+"
+filetype on
+syntax enable           " enable syntax processing
+set tabstop=4       " number of visual spaces per TAB
+set softtabstop=4   " number of spaces in tab when editing
+set expandtab       " tabs are spaces
+
+set smartindent
+set shiftwidth=4
+
+set number              " show line numbers
+set showcmd             " show command in bottom bar
+set wildmenu            " visual autocomplete for command menu
+
+
+" <F2> : tree directory on the left, same for close
+map <F2> :NERDTreeToggle<CR>
+
+" <F3> : tag bar on the right, same for close
+nmap <F3> :TagbarToggle<CR>
+
+" for arch : 
+" pip install pyflakes pep8 pyflakes
+" mv /usr/bin/pyflakes /usr/bin/python3-pyflakes
+" ln -s /usr/bin/pyflakes-python2 /usr/bin/pyflakes
+" mv /usr/bin/flake8 /usr/bin/flake8-python3
+" ln -s /usr/bin/flake8-python2 /usr/bin/flake8
+" mv /usr/bin/pep8 /usr/bin/pep8-python3
+"  ln -s /usr/bin/pep8-python2 /usr/bin/pep8
+
+" ####
+" ## Colorscheme
+" ###
+set background=dark
+colorscheme molokai
+" colorscheme solarized
+"
+" match the original monokai background color
+let g:molokai_original = 1  
+
+" attempts to bring the 256 color version as 
+" close as possible to the the default (dark) GUI version
+let g:rehash256 = 1         
+
+
+filetype plugin indent on
+
+" column 
+" set cursorline cursorcolumn
+set cursorline 
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%80v.*/
+
+
+" Only with Syntastic plugin :
+" highligh Syntastic depending on kind of error 
+highlight SyntasticError ctermfg=red
+highlight SyntasticErrorLine ctermfg=red
+highlight SyntasticErrorSign ctermfg=red
+
+highlight SyntasticStyleError ctermfg=red
+highlight SyntasticStyleErrorLine ctermfg=red
+highlight SyntasticStyleErrorSign ctermfg=red
+
+highlight SyntasticWarning ctermfg=166
+highlight SyntasticWarningLine ctermfg=166
+highlight SyntasticWarningSign ctermfg=166
+
+highlight SyntasticStyleWarning ctermfg=166
+highlight SyntasticStyleWarningLine ctermfg=166
+highlight SyntasticStyleWarningSign ctermfg=166
+
+" Column sign bg for Syntastic
+hi SignColumn ctermbg=232
+
+
+"set colorcolumn=80 
+"highlight ColorColumn ctermbg=1
+
+set list
+set listchars=tab:â–¸\ ,eol:Â¬,trail:Â·,extends:.,precedes:.
+"set listchars=eol:Â¬,trail:Â·,tab:â–¸-,trail:â–¸,extends:â–¸,precedes:â–¸
+let g:indentLine_color_term = 239
+let g:indentLine_char = 'â–¸'
+
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+"let g:indent_guides_enable_on_vim_startup = 1
+"set ts=1 sw=1
+"let g:indent_guides_color_change_percent = 80
+"let g:indent_guides_auto_colors = 0
+""let g:indent_guides_start_level = 0
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=102
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  
+
+
